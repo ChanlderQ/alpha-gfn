@@ -9,7 +9,13 @@ learning_rate = 3e-3
 WINDOW_SIZE = 5 # FUTURE TODO: include window size in action space
 MAX_EXPR_LENGTH = 20 # Maximum number of tokens in sequence
 RESCALE_FACTOR = 100 # Rescaling factor for reward computation
-DEVICE = torch.device('cpu')
+if torch.cuda.is_available():
+    DEVICE = torch.device('cuda')
+elif torch.backends.mps.is_available(): # For Apple Silicon
+    DEVICE = torch.device('mps')
+else:
+    DEVICE = torch.device('cpu')
+print(f"Using device: {DEVICE}")
 
 ## Action Space
 # Begin

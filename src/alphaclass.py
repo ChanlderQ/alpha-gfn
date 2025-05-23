@@ -52,7 +52,7 @@ class AlphaGFN():
         padding = (0, self.max_expr_length - len(self.state))
         padded_tensor = nn.functional.pad(tensor, padding, mode='constant', value=0)
 
-        return padded_tensor
+        return padded_tensor.to(self._device)
         
     def _action_to_token(self, action: int) -> str: 
         '''
