@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from numba import jit
 from typing import List
+from scipy.stats import rankdata
+
 
 @jit(nopython=True)
 def _ops_roll_std_arr(ar: np.ndarray, window_size: int) -> List[List[float]]:
@@ -112,3 +114,24 @@ def ops_roll_corr(df_1: pd.DataFrame, df_2: pd.DataFrame, window_size) -> pd.Dat
     df_corrs = pd.DataFrame(ar_corrs, index=df_1.index, columns=df_2.columns)
 
     return df_corrs
+ 
+# update 0523 add new operation functions
+ 
+def ops_ts_max(df: pd.DataFrame, window: int) -> pd.DataFrame:
+    return df.rolling(window).max()
+
+def ops_ts_min(df: pd.DataFrame, window: int) -> pd.DataFrame:
+    return df.rolling(window).min()
+
+def ops_ts_rank(df: pd.DataFrame, window: int) -> pd.DataFrame:
+    return df.rolling(window).apply(lambda x: rankdata(x)[-1] / len(x), raw=False)
+
+def ops_decay_linear(df: pd.DataFrame, window: int) -> pd.DataFrame:
+    weights = np.arange(1, window + 1)
+    def weighted_avg(x):
+        return np.dot(x, weights) / weights.sum()
+    return df.rolling(window).apply(weighted_avg, raw=True)
+
+def ops_prod(df: pd.DataFrame, window: int) -> pd.DataFrame:
+    return df.rolling(window).apply(np.prod, raw=True)
+

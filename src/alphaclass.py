@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 from utils import ops_roll_std, ops_roll_corr
+from utils import *
 
 
 class AlphaGFN():
@@ -53,6 +54,7 @@ class AlphaGFN():
         padded_tensor = nn.functional.pad(tensor, padding, mode='constant', value=0)
 
         return padded_tensor
+        
         
     def _action_to_token(self, action: int) -> str: 
         '''
@@ -139,9 +141,22 @@ class AlphaGFN():
             if token == "ops_abs":
                 res = operand.apply(np.abs)
             elif token == "ops_log":
+                #debug:
+                #print(f"Operand type: {type(operand)}")
+                #print(operand.columns)
                 res = operand.apply(np.log)
             elif token == "ops_roll_std":
                 res = ops_roll_std(operand, window_size=self.window_size)
+            elif token == "ops_ts_max":
+                res = ops_ts_max(operand, window=self.window_size)
+            elif token == "ops_ts_min":
+                res = ops_ts_min(operand, window=self.window_size)
+            elif token == "ops_ts_rank":
+                res = ops_ts_rank(operand, window=self.window_size)
+            elif token == "ops_decay_linear":
+                res = ops_decay_linear(operand, window=self.window_size)
+            elif token == "ops_prod":
+                res = ops_prod(operand, window=self.window_size)    
             else:
                 ValueError()
             self.stack.append(res)
