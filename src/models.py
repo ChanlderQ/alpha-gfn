@@ -19,7 +19,7 @@ class PositionalEncoding(nn.Module):
     def forward(self, x: Tensor) -> Tensor:
         "x: ([batch_size, ]seq_len, embedding_dim)"
         seq_len = x.size(0) if x.dim() == 2 else x.size(1)
-        return x + self._pe[:seq_len]  # type: ignore
+        return x + self._pe[:seq_len].to(x.device)
     
 class LSTMSharedNet(nn.Module):
     def __init__(

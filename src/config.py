@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 warnings.filterwarnings("ignore")
 
 
-duck_db_path=r"D:\GitHub\CryptoDune\hyperliq\Qlib_Strategy\crypto_features.duckdb"
+duck_db_path=r"D:\GitHub\Quant\alpha-gfn\data\crypto_features.duckdb"
 
 # Connect to DuckDB
 db_con = duckdb.connect(duck_db_path)
@@ -81,14 +81,14 @@ WINDOW_SIZE = 5 # FUTURE TODO: include window size in action space
 MAX_EXPR_LENGTH = 20 # Maximum number of tokens in sequence
 RESCALE_FACTOR = 100 # Rescaling factor for reward computation
 
-DEVICE = torch.device('cpu')
-'''
+#DEVICE = torch.device('cpu')
+
 if torch.cuda.is_available():
     DEVICE = torch.device('cuda')
 else:
     DEVICE = torch.device('cpu')
 print(f"Using device: {DEVICE}")
-'''
+
 ## Action Space
 # Begin
 BEG = ["BEG"] # encoded as 0
